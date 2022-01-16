@@ -1,9 +1,8 @@
 #include "ui.h"
 #include <cassert>
 
-#define SIZE 30
-#define WHITE                                                                  \
-  { 255, 255, 255, 255 }
+const int SIZE = 30;
+const SDL_Color WHITE = {255, 255, 255, 255};
 
 static void renderText(SDL_Renderer *renderer, TTF_Font *font, const char *text,
                        const int x, const int y, const int align = ALIGN_LEFT) {

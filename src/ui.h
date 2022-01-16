@@ -1,5 +1,4 @@
-#ifndef UI_H
-#define UI_H
+#pragma once
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
@@ -7,8 +6,8 @@
 
 #include "game.h"
 
-#define WINDOW_WIDTH 360
-#define WINDOW_HEIGHT 690
+const int WINDOW_WIDTH = 360;
+const int WINDOW_HEIGHT = 690;
 
 enum { TEXTURE_CELL = 0, TEXTURE_CELLG, TEXTURE_BG, TEXTURE_MAX };
 
@@ -30,5 +29,3 @@ SDL_Texture *loadTexture(SDL_Renderer *renderer, const char *file_path,
 void initUI(ui_state &ui);
 void destroyUI(ui_state &ui);
 void render(ui_state &ui, const game_state &game);
-
-#endif // UI_H

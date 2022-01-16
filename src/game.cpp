@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 
-#define INPUT_SET(x) (x == 1)
+static bool is_input_set(int x) { return x == 1; }
 
 static const int tetromino_data[7][4][16] = {
     /* I tetromino */
@@ -98,7 +98,7 @@ static int randomTetromino(game_state &g) {
 }
 
 static bool playable(const grid g, const int x, const int y) {
-  return GRID_IN_BOUNDS(x, y) && g[y][x] == GRID_EMPTY_CELL;
+  return (x >= 0 && x < 10 && y >= 0 && y < 30) && g[y][x] == GRID_EMPTY_CELL;
 }
 
 static bool gridCollision(const grid g, const int tid, const int rid,
@@ -204,29 +204,29 @@ void initGame(game_state &g, int status) {
 }
 
 void handleInput(game_state &game, user_input &input) {
-  if (INPUT_SET(input.move_left)) {
+  if (is_input_set(input.move_left)) {
     tryMove(game, -1, 0);
   }
-  if (INPUT_SET(input.move_right)) {
+  if (is_input_set(input.move_right)) {
     tryMove(game, 1, 0);
   }
-  if (INPUT_SET(input.soft_drop)) {
+  if (is_input_set(input.soft_drop)) {
     tryMove(game, 0, 1);
   }
-  if (INPUT_SET(input.rotate_left)) {
+  if (is_input_set(input.rotate_left)) {
     tryRotate(game, -1);
   }
-  if (INPUT_SET(input.rotate_right)) {
+  if (is_input_set(input.rotate_right)) {
     tryRotate(game, 1);
   }
-  if (INPUT_SET(input.hard_drop)) {
+  if (is_input_set(input.hard_drop)) {
     hardDrop(game);
   }
 }
 
 void gameTick(game_state &game, user_input &input, long ticks) {
   if (game.status != PLAYING) {
-    if (INPUT_SET(input.restart)) {
+    if (is_input_set(input.restart)) {
       if (game.status == OVER) {
         initGame(game, PLAYING);
       } else if (game.status == WAITING) {

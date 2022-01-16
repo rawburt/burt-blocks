@@ -1,5 +1,4 @@
-#ifndef USER_INPUT_H
-#define USER_INPUT_H
+#pragma once
 
 #include "SDL2/SDL.h"
 
@@ -15,5 +14,3 @@ struct user_input {
 
 void resetUserInput(user_input &input);
 void handleInput(user_input &input, SDL_Keycode *code);
-
-#endif // USER_INPUT_H

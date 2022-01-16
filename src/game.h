@@ -1,10 +1,8 @@
-#ifndef GAME_H
-#define GAME_H
+#pragma once
 
 #include "user_input.h"
 
-#define GRID_EMPTY_CELL 9
-#define GRID_IN_BOUNDS(x, y) (x >= 0 && x < 10 && y >= 0 && y < 30)
+const int GRID_EMPTY_CELL = 9;
 
 typedef int grid[30][10];
 
@@ -31,5 +29,3 @@ struct game_state {
 bool checkCell(const int tid, const int rid, const int x, const int y);
 void initGame(game_state &g, int status = WAITING);
 void gameTick(game_state &game, user_input &input, long ticks);
-
-#endif // GAME_H
