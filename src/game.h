@@ -35,7 +35,7 @@ struct game_state
 };
 
 bool checkCell(const int tid, const int rid, const int x, const int y);
-void initGame(game_state *g, int status = WAITING);
-void gameTick(game_state *game, user_input *input, long ticks);
+void initGame(game_state & g, int status = WAITING);
+void gameTick(game_state & game, user_input & input, long ticks);
 
 #endif // GAME_H

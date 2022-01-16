@@ -14,7 +14,7 @@ struct user_input
     int restart;
 };
 
-void resetUserInput(user_input *input);
-void handleInput(user_input *input, SDL_Keycode *code);
+void resetUserInput(user_input & input);
+void handleInput(user_input & input, SDL_Keycode *code);
 
 #endif // USER_INPUT_H

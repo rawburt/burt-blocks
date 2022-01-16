@@ -2,7 +2,7 @@
 #include "ui.h"
 #include "user_input.h"
 
-void gameLoop(ui_state *ui, game_state *game, user_input *input)
+void gameLoop(ui_state & ui, game_state & game, user_input & input)
 {
     bool running = true;
 
@@ -36,14 +36,14 @@ int main(void)
     srand(time(NULL));
 
     ui_state ui;
-    initUI(&ui);
+    initUI(ui);
 
     game_state game;
-    initGame(&game);
+    initGame(game);
 
     user_input input;
 
-    gameLoop(&ui, &game, &input);
+    gameLoop(ui, game, input);
 
-    destroyUI(&ui);
+    destroyUI(ui);
 }

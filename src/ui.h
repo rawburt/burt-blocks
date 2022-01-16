@@ -43,8 +43,8 @@ struct ui_state
 };
 
 SDL_Texture *loadTexture(SDL_Renderer *renderer, const char *file_path, const int alpha = 255);
-void initUI(ui_state *ui);
-void destroyUI(ui_state *ui);
-void render(ui_state *ui, const game_state *game);
+void initUI(ui_state & ui);
+void destroyUI(ui_state & ui);
+void render(ui_state & ui, const game_state & game);
 
 #endif // UI_H

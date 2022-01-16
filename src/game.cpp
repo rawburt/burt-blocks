@@ -91,32 +91,32 @@ static void shuffleBag(bag b)
    }
 }
 
-static void initQueue(game_state *g)
+static void initQueue(game_state & g)
 {
-    g->b = 0;
-    g->bid = 0;
+    g.b = 0;
+    g.bid = 0;
 
     for (auto i = 0; i < 7; i++)
     {
-        g->bags[0][i] = i;
-        g->bags[1][i] = i;
+        g.bags[0][i] = i;
+        g.bags[1][i] = i;
     }
 
-    shuffleBag(g->bags[0]);
-    shuffleBag(g->bags[1]);
+    shuffleBag(g.bags[0]);
+    shuffleBag(g.bags[1]);
 }
 
-static int randomTetromino(game_state *g)
+static int randomTetromino(game_state & g)
 {
-    int tid = g->bags[g->b][g->bid];
+    int tid = g.bags[g.b][g.bid];
 
-    g->bid += 1;
+    g.bid += 1;
 
-    if (g->bid > 6)
+    if (g.bid > 6)
     {
-        shuffleBag(g->bags[g->b]);
-        g->bid = 0;
-        g->b = !g->b;
+        shuffleBag(g.bags[g.b]);
+        g.bid = 0;
+        g.b = !g.b;
     }
 
     return tid;
@@ -153,24 +153,24 @@ static int dropY(grid g, const int tid, const int rid, const int x, int y)
     return (y - 1);
 }
 
-static void generateTetromino(game_state *game)
+static void generateTetromino(game_state & game)
 {
-    game->fx = 3;
-    game->fy = 8;
-    game->gy = 0;
-    game->rid = 0;
-    game->tid = randomTetromino(game);
+    game.fx = 3;
+    game.fy = 8;
+    game.gy = 0;
+    game.rid = 0;
+    game.tid = randomTetromino(game);
 }
 
-static void placeTetromino(game_state *game)
+static void placeTetromino(game_state & game)
 {
     for (auto y = 0; y < 4; y++)
     {
         for (auto x = 0; x < 4; x++)
         {
-            if (checkCell(game->tid, game->rid, x, y))
+            if (checkCell(game.tid, game.rid, x, y))
             {
-                game->matrix[game->fy + y][game->fx + x] = game->tid;
+                game.matrix[game.fy + y][game.fx + x] = game.tid;
             }
         }
     }
@@ -210,29 +210,29 @@ static void clearLine(grid g, const int line)
     }
 }
 
-static void tryMove(game_state *game, const int x, const int y)
+static void tryMove(game_state & game, const int x, const int y)
 {
-    if (!gridCollision(game->matrix, game->tid, game->rid, game->fx + x, game->fy + y))
+    if (!gridCollision(game.matrix, game.tid, game.rid, game.fx + x, game.fy + y))
     {
-        game->fx += x;
-        game->fy += y;
+        game.fx += x;
+        game.fy += y;
     }
 }
 
-static void tryRotate(game_state *game, int r)
+static void tryRotate(game_state & game, int r)
 {
-    r = game->rid + r;
+    r = game.rid + r;
     r = r > 3 ? 0 : r;
 
-    if (!gridCollision(game->matrix, game->tid, r, game->fx, game->fy))
+    if (!gridCollision(game.matrix, game.tid, r, game.fx, game.fy))
     {
-        game->rid = r;
+        game.rid = r;
     }
 }
 
-static void hardDrop(game_state *game)
+static void hardDrop(game_state & game)
 {
-    game->fy = dropY(game->matrix, game->tid, game->rid, game->fx, game->fy);
+    game.fy = dropY(game.matrix, game.tid, game.rid, game.fx, game.fy);
     placeTetromino(game);
     generateTetromino(game);
 }
@@ -242,58 +242,58 @@ bool checkCell(const int tid, const int rid, const int x, const int y)
     return tetromino_data[tid][rid][(4 * y) + x] == 1;
 }
 
-void initGame(game_state *g, int status)
+void initGame(game_state & g, int status)
 {
-    g->status = status;
-    g->level = 0;
-    g->lines = 0;
-    g->last_drop = 0;
-    initGrid(g->matrix);
+    g.status = status;
+    g.level = 0;
+    g.lines = 0;
+    g.last_drop = 0;
+    initGrid(g.matrix);
     initQueue(g);
     generateTetromino(g);
 }
 
-void handleInput(game_state *game, user_input *input)
+void handleInput(game_state & game, user_input & input)
 {
-    if (INPUT_SET(input->move_left))
+    if (INPUT_SET(input.move_left))
     {
         tryMove(game, -1, 0);
     }
-    if (INPUT_SET(input->move_right))
+    if (INPUT_SET(input.move_right))
     {
         tryMove(game, 1, 0);
     }
-    if (INPUT_SET(input->soft_drop))
+    if (INPUT_SET(input.soft_drop))
     {
         tryMove(game, 0, 1);
     }
-    if (INPUT_SET(input->rotate_left))
+    if (INPUT_SET(input.rotate_left))
     {
         tryRotate(game, -1);
     }
-    if (INPUT_SET(input->rotate_right))
+    if (INPUT_SET(input.rotate_right))
     {
         tryRotate(game, 1);
     }
-    if (INPUT_SET(input->hard_drop))
+    if (INPUT_SET(input.hard_drop))
     {
         hardDrop(game);
     }
 }
 
-void gameTick(game_state *game, user_input *input, long ticks)
+void gameTick(game_state & game, user_input & input, long ticks)
 {
-    if (game->status != PLAYING)
+    if (game.status != PLAYING)
     {
-        if (INPUT_SET(input->restart))
+        if (INPUT_SET(input.restart))
         {
-            if (game->status == OVER)
+            if (game.status == OVER)
             {
                 initGame(game, PLAYING);
             }
-            else if (game->status == WAITING)
+            else if (game.status == WAITING)
             {
-                game->status = PLAYING;
+                game.status = PLAYING;
             }
         }
         return;
@@ -301,22 +301,22 @@ void gameTick(game_state *game, user_input *input, long ticks)
 
     handleInput(game, input);
 
-    if (ticks - game->last_drop > dropSpeed(game->level))
+    if (ticks - game.last_drop > dropSpeed(game.level))
     {
-        game->last_drop = ticks;
-        game->fy += 1;
+        game.last_drop = ticks;
+        game.fy += 1;
 
-        if (gridCollision(game->matrix, game->tid, game->rid, game->fx, game->fy))
+        if (gridCollision(game.matrix, game.tid, game.rid, game.fx, game.fy))
         {
-            game->fy -= 1;
+            game.fy -= 1;
             placeTetromino(game);
             generateTetromino(game);
         }
     }
 
-    if (gridCollision(game->matrix, game->tid, game->rid, game->fx, game->fy))
+    if (gridCollision(game.matrix, game.tid, game.rid, game.fx, game.fy))
     {
-        game->status = OVER;
+        game.status = OVER;
         return;
     }
 
@@ -324,7 +324,7 @@ void gameTick(game_state *game, user_input *input, long ticks)
 
     for (auto y = 0; y < 30; y++)
     {
-        if (lineFull(game->matrix, y))
+        if (lineFull(game.matrix, y))
         {
             lines.push_back(y);
         }
@@ -332,14 +332,14 @@ void gameTick(game_state *game, user_input *input, long ticks)
 
     if (!lines.empty())
     {
-        game->lines += lines.size();
-        game->level = game->lines / 10;
+        game.lines += lines.size();
+        game.level = game.lines / 10;
 
         for (auto y : lines)
         {
-            clearLine(game->matrix, y);
+            clearLine(game.matrix, y);
         }
     }
 
-    game->gy = dropY(game->matrix, game->tid, game->rid, game->fx, game->fy);
+    game.gy = dropY(game.matrix, game.tid, game.rid, game.fx, game.fy);
 }
