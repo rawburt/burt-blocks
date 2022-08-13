@@ -21,7 +21,7 @@ make
 Development build:
 
 ```sh
-make dev
+make burt-blocks-dev
 ```
 
 ### Emscripten
@@ -29,11 +29,11 @@ make dev
 Build:
 
 ```sh
-make em
+make build/burt-blocks.js
 ```
 
 Development build:
 
 ```sh
-make em-dev
+make build/burt-blocks.html
 ```
