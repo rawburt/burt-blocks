@@ -1,6 +1,7 @@
 #include "game.h"
 #include "ui.h"
 #include "user_input.h"
+#include <time.h>
 
 void gameLoop(ui_state &ui, game_state &game, user_input &input) {
   bool running = true;
