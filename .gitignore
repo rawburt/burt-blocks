@@ -1,6 +1,7 @@
 burt-blocks
 burt-blocks-dev
 *.dSYM
-em/*.data
-em/*.js
-em/*.wasm
+build/*.data
+build/*.js
+build/*.wasm
+build/burt-blocks.html
