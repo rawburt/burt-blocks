@@ -1,0 +1,19 @@
+<html>
+
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    var Module = {
+      print: (function () {
+        var element = document.getElementById('output');
+        return function (text) {
+          element.innerHTML += text.replace('\n', '<br>', 'g') + '<br>';
+        };
+      })(),
+      canvas: document.getElementById('canvas')
+    };
+  </script>
+  <script src="burt-blocks.js"></script>
+</body>
+
+</html>

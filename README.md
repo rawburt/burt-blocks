@@ -26,14 +26,14 @@ make dev
 
 ### Emscripten
 
-Create the destination directory:
-
-```sh
-mkdir em
-```
-
 Build:
 
 ```sh
 make em
+```
+
+Development build:
+
+```sh
+make em-dev
 ```

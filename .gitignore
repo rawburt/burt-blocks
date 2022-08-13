@@ -1,4 +1,6 @@
 burt-blocks
 burt-blocks-dev
 *.dSYM
-em
+em/*.data
+em/*.js
+em/*.wasm
