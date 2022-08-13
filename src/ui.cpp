@@ -82,7 +82,7 @@ SDL_Texture *loadTexture(SDL_Renderer *renderer, const char *file_path,
 
 void initUI(ui_state &ui) {
   // https://github.com/emscripten-core/emscripten/issues/3139#issuecomment-70590021
-  if (SDL_Init(SDL_INIT_EVERYTHING & ~(SDL_INIT_TIMER | SDL_INIT_HAPTIC)) != 0) {
+  if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
     exit(1);
   }
