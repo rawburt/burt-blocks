@@ -1,16 +1,30 @@
 <html>
 
+<head>
+  <title>Burt Blocks</title>
+  <style>
+    body {
+      background-color: rgb(32, 32, 32);
+      color: #fff;
+    }
+
+    #main {
+      text-align: center;
+    }
+  </style>
+</head>
+
 <body>
-  <canvas id="canvas"></canvas>
+  <div id="main">
+    <p id="loading">Loading...</p>
+    <canvas id="canvas"></canvas>
+  </div>
   <script>
     var Module = {
-      print: (function () {
-        var element = document.getElementById('output');
-        return function (text) {
-          element.innerHTML += text.replace('\n', '<br>', 'g') + '<br>';
-        };
-      })(),
-      canvas: document.getElementById('canvas')
+      canvas: document.getElementById('canvas'),
+      onRuntimeInitialized: function () {
+        document.getElementById('loading').style.visibility = 'hidden';
+      }
     };
   </script>
   <script src="burt-blocks.js"></script>
