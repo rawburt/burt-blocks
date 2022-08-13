@@ -2,6 +2,8 @@
 
 A small tetris clone using C++ and SDL2.
 
+[Play it online!](http://www.robertp.me/games/burt-blocks/index.html)
+
 ## Building
 
 ### Clang
