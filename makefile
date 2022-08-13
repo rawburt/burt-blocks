@@ -14,4 +14,4 @@ clean:
 	rm -rf *.dSYM
 	rm -rf burt-blocks
 	rm -rf burt-blocks-dev
-	rm -rf em/
+	rm -rf build/burt-blocks.*
