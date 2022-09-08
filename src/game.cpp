@@ -176,7 +176,7 @@ static void tryMove(game_state &game, const int x, const int y) {
 
 static void tryRotate(game_state &game, int r) {
   r = game.rid + r;
-  r = r > 3 ? 0 : r;
+  r = r > 3 ? 0 : (r < 0 ? 3 : r);
 
   if (!gridCollision(game.matrix, game.tid, r, game.fx, game.fy)) {
     game.rid = r;
