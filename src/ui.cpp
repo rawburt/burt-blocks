@@ -1,17 +1,24 @@
 #include "ui.h"
+
 #include <cassert>
 
 const int SIZE = 30;
-const SDL_Color WHITE = {255, 255, 255, 255};
+const SDL_Color WHITE = { 255, 255, 255, 255 };
 
-static void renderText(SDL_Renderer *renderer, TTF_Font *font, const char *text,
-                       const int x, const int y, const int align = ALIGN_LEFT) {
-  SDL_Surface *surface = TTF_RenderText_Blended(font, text, WHITE);
-  SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+static void
+renderText(SDL_Renderer* renderer,
+           TTF_Font* font,
+           const char* text,
+           const int x,
+           const int y,
+           const int align = ALIGN_LEFT)
+{
+  SDL_Surface* surface = TTF_RenderText_Blended(font, text, WHITE);
+  SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 
   SDL_FreeSurface(surface);
 
-  SDL_Rect dest = {x, y, 0, 0};
+  SDL_Rect dest = { x, y, 0, 0 };
 
   SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
 
@@ -26,8 +33,10 @@ static void renderText(SDL_Renderer *renderer, TTF_Font *font, const char *text,
   SDL_DestroyTexture(texture);
 }
 
-static void renderGrid(ui_state &ui, const grid g) {
-  SDL_Rect dest = {SIZE, SIZE, SIZE, SIZE};
+static void
+renderGrid(ui_state& ui, const grid g)
+{
+  SDL_Rect dest = { SIZE, SIZE, SIZE, SIZE };
 
   for (auto y = 10; y < 30; y++) {
     for (auto x = 0; x < 10; x++) {
@@ -43,8 +52,10 @@ static void renderGrid(ui_state &ui, const grid g) {
   }
 }
 
-static void renderTetrominos(ui_state &ui, const game_state &game) {
-  SDL_Rect dest = {SIZE, SIZE, SIZE, SIZE};
+static void
+renderTetrominos(ui_state& ui, const game_state& game)
+{
+  SDL_Rect dest = { SIZE, SIZE, SIZE, SIZE };
 
   for (auto y = 0; y < 4; y++) {
     for (auto x = 0; x < 4; x++) {
@@ -64,10 +75,11 @@ static void renderTetrominos(ui_state &ui, const game_state &game) {
   }
 }
 
-SDL_Texture *loadTexture(SDL_Renderer *renderer, const char *file_path,
-                         const int alpha) {
-  SDL_Surface *surface = IMG_Load(file_path);
-  SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+SDL_Texture*
+loadTexture(SDL_Renderer* renderer, const char* file_path, const int alpha)
+{
+  SDL_Surface* surface = IMG_Load(file_path);
+  SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 
   assert(texture);
 
@@ -80,7 +92,9 @@ SDL_Texture *loadTexture(SDL_Renderer *renderer, const char *file_path,
   return texture;
 }
 
-void initUI(ui_state &ui) {
+void
+initUI(ui_state& ui)
+{
   // https://github.com/emscripten-core/emscripten/issues/3139#issuecomment-70590021
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
@@ -92,8 +106,12 @@ void initUI(ui_state &ui) {
     exit(1);
   }
 
-  ui.window = SDL_CreateWindow("Burt Blocks", SDL_WINDOWPOS_UNDEFINED,
-                               SDL_WINDOWPOS_UNDEFINED, 360, 690, 0);
+  ui.window = SDL_CreateWindow("Burt Blocks",
+                               SDL_WINDOWPOS_UNDEFINED,
+                               SDL_WINDOWPOS_UNDEFINED,
+                               360,
+                               690,
+                               0);
 
   if (!ui.window) {
     SDL_Log("Could not create window: %s", SDL_GetError());
@@ -103,7 +121,7 @@ void initUI(ui_state &ui) {
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 0);
 
   ui.renderer = SDL_CreateRenderer(
-      ui.window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    ui.window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
   if (!ui.renderer) {
     SDL_Log("Could not create renderer: %s", SDL_GetError());
@@ -114,13 +132,15 @@ void initUI(ui_state &ui) {
 
   ui.textures[TEXTURE_CELL] = loadTexture(ui.renderer, "./assets/cell.png");
   ui.textures[TEXTURE_CELLG] =
-      loadTexture(ui.renderer, "./assets/cell.png", 125);
+    loadTexture(ui.renderer, "./assets/cell.png", 125);
   ui.textures[TEXTURE_BG] = loadTexture(ui.renderer, "./assets/cell-bg.png");
   ui.fonts[FONT_MAIN] = TTF_OpenFont("./assets/FFFFORWA.TTF", 12);
   ui.fonts[FONT_TITLE] = TTF_OpenFont("./assets/FFFFORWA.TTF", 36);
 }
 
-void destroyUI(ui_state &ui) {
+void
+destroyUI(ui_state& ui)
+{
   for (auto t : ui.textures) {
     SDL_DestroyTexture(t);
   }
@@ -135,34 +155,44 @@ void destroyUI(ui_state &ui) {
   SDL_Quit();
 }
 
-void render(ui_state &ui, const game_state &game) {
+void
+render(ui_state& ui, const game_state& game)
+{
   SDL_SetRenderDrawColor(ui.renderer, 32, 32, 32, 255);
   SDL_RenderClear(ui.renderer);
 
   switch (game.status) {
-  case WAITING: {
-    renderText(ui.renderer, ui.fonts[FONT_TITLE], "BURT BLOCKS", 0, 200,
-               ALIGN_CENTER);
-    renderText(ui.renderer, ui.fonts[FONT_MAIN], "Press R to play.", 0, 290,
-               ALIGN_CENTER);
-  } break;
-  case PLAYING: {
-    renderGrid(ui, game.matrix);
-    renderTetrominos(ui, game);
+    case WAITING: {
+      renderText(
+        ui.renderer, ui.fonts[FONT_TITLE], "BURT BLOCKS", 0, 200, ALIGN_CENTER);
+      renderText(ui.renderer,
+                 ui.fonts[FONT_MAIN],
+                 "Press R to play.",
+                 0,
+                 290,
+                 ALIGN_CENTER);
+    } break;
+    case PLAYING: {
+      renderGrid(ui, game.matrix);
+      renderTetrominos(ui, game);
 
-    sprintf(ui.level_text, "LEVEL - %03d", game.level);
-    renderText(ui.renderer, ui.fonts[FONT_MAIN], ui.level_text, 30, 30);
+      sprintf(ui.level_text, "LEVEL - %03d", game.level);
+      renderText(ui.renderer, ui.fonts[FONT_MAIN], ui.level_text, 30, 30);
 
-    sprintf(ui.score_text, "SCORE - %03d", game.lines);
-    renderText(ui.renderer, ui.fonts[FONT_MAIN], ui.score_text, 30, 30,
-               ALIGN_RIGHT);
-  } break;
-  case OVER: {
-    renderText(ui.renderer, ui.fonts[FONT_TITLE], "GAME OVER", 0, 200,
-               ALIGN_CENTER);
-    renderText(ui.renderer, ui.fonts[FONT_MAIN], "Press R to restart.", 0, 290,
-               ALIGN_CENTER);
-  } break;
+      sprintf(ui.score_text, "SCORE - %03d", game.lines);
+      renderText(
+        ui.renderer, ui.fonts[FONT_MAIN], ui.score_text, 30, 30, ALIGN_RIGHT);
+    } break;
+    case OVER: {
+      renderText(
+        ui.renderer, ui.fonts[FONT_TITLE], "GAME OVER", 0, 200, ALIGN_CENTER);
+      renderText(ui.renderer,
+                 ui.fonts[FONT_MAIN],
+                 "Press R to restart.",
+                 0,
+                 290,
+                 ALIGN_CENTER);
+    } break;
   }
 
   SDL_RenderPresent(ui.renderer);

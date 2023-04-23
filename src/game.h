@@ -8,9 +8,15 @@ typedef int grid[30][10];
 
 typedef int bag[7];
 
-enum { WAITING, PLAYING, OVER };
+enum
+{
+  WAITING,
+  PLAYING,
+  OVER
+};
 
-struct game_state {
+struct game_state
+{
   int status;
   int tid;
   int rid;
@@ -26,6 +32,9 @@ struct game_state {
   int bid;
 };
 
-bool checkCell(const int tid, const int rid, const int x, const int y);
-void initGame(game_state &g, int status = WAITING);
-void gameTick(game_state &game, user_input &input, long ticks);
+bool
+checkCell(const int tid, const int rid, const int x, const int y);
+void
+initGame(game_state& g, int status = WAITING);
+void
+gameTick(game_state& game, user_input& input, long ticks);

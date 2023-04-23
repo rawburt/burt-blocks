@@ -1,9 +1,12 @@
+#include <time.h>
+
 #include "game.h"
 #include "ui.h"
 #include "user_input.h"
-#include <time.h>
 
-void gameLoop(ui_state &ui, game_state &game, user_input &input) {
+void
+gameLoop(ui_state& ui, game_state& game, user_input& input)
+{
   bool running = true;
 
   while (running) {
@@ -13,13 +16,13 @@ void gameLoop(ui_state &ui, game_state &game, user_input &input) {
 
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
-      case SDL_QUIT:
-        running = false;
-        break;
-      case SDL_KEYDOWN:
-        handleInput(input, &event.key.keysym.sym);
-      default:
-        break;
+        case SDL_QUIT:
+          running = false;
+          break;
+        case SDL_KEYDOWN:
+          handleInput(input, &event.key.keysym.sym);
+        default:
+          break;
       }
     }
 
@@ -29,7 +32,9 @@ void gameLoop(ui_state &ui, game_state &game, user_input &input) {
   }
 }
 
-int main(void) {
+int
+main(void)
+{
   srand(time(NULL));
 
   ui_state ui;
